@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="card" style="width: 18rem;">
+        {% if blog.image %}
+        <img class="card-img-top" src="{{blog.image.url}}" alt="Card image cap">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">Author : {{blog.author}}</h5>
+          <h5 class="card-title">Title : {{blog.title}}</h5>
+          <p class="card-text">Content : {{blog.content}}</p>
+          <p class="card-text">Category : {{blog.genre}}</p>
+          {% if request.user == blog.author %}
+          <a href="{% url 'edit' blog.id %}" class="btn btn-primary">Edit</a>
+          <a href="{% url 'edit_new' blog.id %}" class="btn btn-primary">Edit New</a>
+          <a href="{% url 'delete' blog.id %}" class="btn btn-primary">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+
+
+      <!---Comment Section-->
+<form method="post">
+  {% csrf_token %}
+      <section style="background-color: #d94125;">
+        <div class="container my-5 py-5 text-dark">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-6">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="d-flex flex-start w-100">
+                    <img class="rounded-circle shadow-1-strong me-3"
+                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65"
+                      height="65" />
+                    <div class="w-100">
+                      <h5>Add a comment</h5>
+                      
+                      <div class="form-outline">
+                        <textarea class="form-control" id="textAreaExample" name="comment" rows="4">{{comment.comment}}</textarea>
+                        <label class="form-label" for="textAreaExample">What is your view?</label>
+                      </div>
+                      <div class="d-flex justify-content-between mt-3">
+                        <button type="submit" class="btn btn-danger">
+                          Send <i class="fas fa-long-arrow-alt-right ms-1"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
+
+
+
+<!---Comment list-->
+
+{% for i in comments %}
+{% if i != comment %}
+<div class="row d-flex justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+      <div class="card-body p-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <p>{{i.comment}}</p>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-row align-items-center">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(4).webp" alt="avatar" width="25"
+                  height="25" />
+                <p class="small mb-0 ms-2">{{i.user.username}}</p>
+              </div>
+              {% if request.user == i.user %}
+              {% if not edit %}
+              <div class="d-flex flex-row align-items-center">
+                <a href="{% url 'comment_delete' i.id %}" class="btn btn-primary">Delete</a>
+                <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                <a href="{% url 'comment_edit' i.id %}" class="btn btn-primary">Edit</a>
+              </div>
+              {% endif %}
+              {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+
+
+{% endblock %}
+
+

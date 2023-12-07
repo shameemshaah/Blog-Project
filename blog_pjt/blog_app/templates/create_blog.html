@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Create your Blog</h1>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Title</label>
+        <input type="text" name="title"><br><br>
+        <label>Content</label>
+        <textarea type="text" name="content" cols="30" rows="10"></textarea><br><br>
+        <input type="file" name="image" accept="images/*">
+        <br>
+        <select name="genre">
+            <option value="education">Education</option>
+            <option value="movie">Movie</option>
+            <option value="politics">Politics</option>
+            <option value="others">Others</option>
+        </select>
+        <br><br><br>
+        <input type="submit">
+    </form>
+{% endblock %}
+

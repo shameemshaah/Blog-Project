@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>OTP Verification Page</h1>
+    <hr>
+    <h4>OTP Send to {{email}}</h4>
+    <form method="post">
+        {% csrf_token %}
+        <label>OTP</label>
+        <input type="text" name="otp">
+        <input type="submit">
+    </form>
+</body>
+</html>
+
+
+{% for message in messages %}
+    {% if message.tags == 'error' %}
+        <span style="color:red">{{ message }}</span>
+    {% elif message.tags == 'success' %}
+        <span style="color:green">{{ message }}</span>
+    {% else %}
+        <span style="color:blue">{{ message }}</span>
+    {% endif %}
+{% endfor %}
